@@ -14,14 +14,26 @@ pub enum LogLevel {
     ERROR,
 }
 
+impl From<&Level> for LogLevel {
+    fn from(value: &Level) -> Self {
+        match value {
+            &Level::TRACE => LogLevel::TRACE,
+            &Level::DEBUG => LogLevel::DEBUG,
+            &Level::INFO => LogLevel::INFO,
+            &Level::WARN => LogLevel::WARN,
+            &Level::ERROR => LogLevel::ERROR,
+        }
+    }
+}
+
 impl From<&LogLevel> for Level {
     fn from(value: &LogLevel) -> Self {
         match value {
-            LogLevel::TRACE => Level::TRACE,
-            LogLevel::DEBUG => Level::DEBUG,
-            LogLevel::INFO => Level::INFO,
-            LogLevel::WARN => Level::WARN,
-            LogLevel::ERROR => Level::ERROR,
+            &LogLevel::TRACE => Level::TRACE,
+            &LogLevel::DEBUG => Level::DEBUG,
+            &LogLevel::INFO => Level::INFO,
+            &LogLevel::WARN => Level::WARN,
+            &LogLevel::ERROR => Level::ERROR,
         }
     }
 }
