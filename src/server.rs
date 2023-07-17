@@ -1,9 +1,19 @@
-use axum::{routing::get, Router};
+mod rooms;
 
-async fn get_index(_body: String) -> String {
-    "neat".to_owned()
+use axum::{response::IntoResponse, routing::get, Router};
+use hyper::StatusCode;
+
+async fn get_root(_body: String) -> impl IntoResponse {
+    "neat"
+}
+
+async fn not_found() -> impl IntoResponse {
+    (StatusCode::NOT_FOUND, "That page doesn't exist!")
 }
 
 pub fn server() -> Router {
-    Router::new().route("/", get(get_index))
+    Router::new()
+        .route("/", get(get_root))
+        .nest("/rooms", rooms::room_routes())
+        .fallback(not_found)
 }
